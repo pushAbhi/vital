@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { AnalysisProvider } from "./components/AnalysisProvider";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -13,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Vital",
-    description: "- AI powered client intelligence for health coaches",
+    title: "Vital — Client Intelligence",
+    description: "AI-powered client intelligence for health coaches",
 };
 
 export default function RootLayout({
@@ -27,7 +28,9 @@ export default function RootLayout({
             lang="en"
             className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
         >
-            <body className="min-h-full flex flex-col">{children}</body>
+            <body className="min-h-full flex flex-col bg-[#F7F8FA] text-slate-800">
+                <AnalysisProvider>{children}</AnalysisProvider>
+            </body>
         </html>
     );
 }

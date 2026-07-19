@@ -1,13 +1,7 @@
 "use server";
 
-interface FormState {
-    success: boolean;
-    error: string | null;
-    data?: MedicalData | null;
-}
-
 export interface MedicalData {
-    diagnosysSummary: string[];
+    diagonosysSummary: string[];
     nutritionAdherence: number;
     exerciseSteps: number;
     sleepAmount: number;
@@ -20,20 +14,26 @@ export interface MedicalData {
     recommendedActions: string;
 }
 
+export interface FormState {
+    success: boolean;
+    error: string | null;
+    data: MedicalData | null;
+}
+
 export async function handleFormSubmit(
-    prevState: FormState,
+    _prevState: FormState,
     formData: FormData,
 ): Promise<FormState> {
     const content = formData.get("content") as string;
 
-    if (!content) {
-        return { success: false, error: "Please input content" };
+    if (!content || !content.trim()) {
+        return { success: false, error: "Please paste a client-coach conversation.", data: null };
     }
 
     try {
-        console.log(`Saving Data to DB : ${content}`);
+        const baseURL =
+            process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-        const baseURL = process.env.NEXT_PUBLIC_SITE_URL;
         const response = await fetch(`${baseURL}/api/gemini`, {
             method: "POST",
             headers: {
@@ -43,18 +43,24 @@ export async function handleFormSubmit(
         });
 
         if (!response.ok) {
-            throw new Error(`response ERROR: ${response.status}`);
+            throw new Error(`API error: ${response.status}`);
         }
 
-        const data = await response.json();
+        const payload = await response.json();
 
-        const medicalData: MedicalData = JSON.parse(data.text);
+        if (payload.error) {
+            throw new Error(payload.error);
+        }
 
-        console.log("Data from API route : ", medicalData);
+        const medicalData: MedicalData = JSON.parse(payload.text);
 
         return { success: true, error: null, data: medicalData };
     } catch (err) {
         console.log(`Error: ${err}`);
-        return { success: false, error: "Something went wrong." };
+        return {
+            success: false,
+            error: "Something went wrong analysing the conversation.",
+            data: null,
+        };
     }
 }
