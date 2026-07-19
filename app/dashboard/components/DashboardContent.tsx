@@ -179,16 +179,18 @@ function DashboardBody({ data }: { data: MedicalData }) {
     ];
 
     //hardcoded
-    const riskSeverities: { label: string; level: "High" | "Medium" | "Low" }[] =
-        risks.map((r, i) => ({
-            label: r,
-            level: i === 0 ? "High" : i === 1 ? "High" : "Medium",
-        }));
+    const riskSeverities: {
+        label: string;
+        level: "High" | "Medium" | "Low";
+    }[] = risks.map((r, i) => ({
+        label: r,
+        level: i === 0 ? "High" : i === 1 ? "High" : "Medium",
+    }));
 
     return (
         <div className="flex-1 min-w-0 overflow-y-auto">
             {/* Top bar */}
-            <header className="sticky top-0 z-10 bg-[#F7F8FA]/90 backdrop-blur border-b border-slate-200/80 px-6 py-3">
+            <header className="sticky top-0 z-10 bg-surface/90 backdrop-blur border-b border-slate-200/80 px-6 py-3">
                 <div className="flex items-center justify-between gap-4">
                     <Link
                         href="/"
@@ -216,7 +218,7 @@ function DashboardBody({ data }: { data: MedicalData }) {
                 </div>
             </header>
 
-            <div className="px-6 py-6 space-y-6 max-w-[1400px]">
+            <div className="px-6 py-6 space-y-6 max-w-350">
                 {/* Client header */}
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                     <div className="flex items-center gap-4">
@@ -330,7 +332,7 @@ function DashboardBody({ data }: { data: MedicalData }) {
                                         key={i}
                                         className="flex gap-2 text-xs text-slate-600 leading-relaxed"
                                     >
-                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#0B1F3A] shrink-0" />
+                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-navy shrink-0" />
                                         {item}
                                     </li>
                                 ))}
@@ -564,14 +566,14 @@ export default function DashboardContent() {
 
     if (!data) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-[#F7F8FA] text-sm text-slate-500">
+            <div className="min-h-screen flex items-center justify-center bg-surface text-sm text-slate-500">
                 Loading analysis…
             </div>
         );
     }
 
     return (
-        <div className="flex min-h-screen bg-[#F7F8FA]">
+        <div className="flex min-h-screen bg-surface">
             <Sidebar />
             <DashboardBody data={data} />
         </div>
