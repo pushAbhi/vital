@@ -1,5 +1,19 @@
 "use server";
 
+export type EvidenceType = "F" | "R" | "I" | "M";
+export type RiskLevel = "High" | "Medium" | "Low";
+
+export interface SupportingEvidence {
+    quote: string;
+    day: string;
+    type: EvidenceType;
+}
+
+export interface RiskSeverity {
+    label: string;
+    level: RiskLevel;
+}
+
 export interface MedicalData {
     diagonosysSummary: string[];
     nutritionAdherence: number;
@@ -10,8 +24,10 @@ export interface MedicalData {
     engagementLevel: string;
     keyBarriers: string;
     pendingActions: string[];
-    risksAndAttentionFlags: string[];
     recommendedActions: string;
+    keyTakeaway: string;
+    supportingEvidence: SupportingEvidence[];
+    riskSeverities: RiskSeverity[];
 }
 
 export interface FormState {
@@ -27,7 +43,11 @@ export async function handleFormSubmit(
     const content = formData.get("content") as string;
 
     if (!content || !content.trim()) {
-        return { success: false, error: "Please paste a client-coach conversation.", data: null };
+        return {
+            success: false,
+            error: "Please paste a client-coach conversation.",
+            data: null,
+        };
     }
 
     try {

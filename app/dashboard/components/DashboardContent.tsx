@@ -138,54 +138,14 @@ function DashboardBody({ data }: { data: MedicalData }) {
     const engagement = data.engagementLevel ?? "—";
     const barriers = data.keyBarriers ?? "—";
     const pending = data.pendingActions ?? [];
-    const risks = data.risksAndAttentionFlags ?? [];
     const recommended = data.recommendedActions ?? "—";
+    const keyTakeaway = data.keyTakeaway ?? "—";
+    const supportingEvidence = data.supportingEvidence ?? [];
+    const riskSeverities = data.riskSeverities ?? [];
 
     const nLabel = nutritionLabel(nutrition);
     const sLabel = sleepLabel(sleep);
     const wLabel = waterLabel(water);
-
-    //hardcoded
-    const keyTakeaway =
-        "Client is engaged and making effort, but chronic short sleep, work stress, and inconsistent meal/protein planning are the primary risks. Bloating and acidity remain intermittent.";
-
-    //hardcoded
-    const supportingEvidence = [
-        {
-            quote: "Slept only around 5 hours last night. Daughter had exams, so I was awake late.",
-            day: "Day 1",
-            type: "R" as const,
-        },
-        {
-            quote: "Still having acidity and bloating.",
-            day: "Day 2",
-            type: "R" as const,
-        },
-        {
-            quote: "Water 4 litres, Sleep 5 hours, Steps around 8,000, Exercise only walking.",
-            day: "Day 3",
-            type: "F" as const,
-        },
-        {
-            quote: "During a meeting today I was so tired that my head went down on the table and I actually slept for a few seconds.",
-            day: "Day 7",
-            type: "R" as const,
-        },
-        {
-            quote: "Slept better last night, around 8 hours. Energy feels much better today.",
-            day: "Day 8",
-            type: "R" as const,
-        },
-    ];
-
-    //hardcoded
-    const riskSeverities: {
-        label: string;
-        level: "High" | "Medium" | "Low";
-    }[] = risks.map((r, i) => ({
-        label: r,
-        level: i === 0 ? "High" : i === 1 ? "High" : "Medium",
-    }));
 
     return (
         <div className="flex-1 min-w-0 overflow-y-auto">
@@ -439,8 +399,13 @@ function DashboardBody({ data }: { data: MedicalData }) {
                                 badge="I"
                                 body={
                                     <ul className="space-y-1">
-                                        {risks.map((r, i) => (
-                                            <li key={i}>• {r}</li>
+                                        {riskSeverities.map((r, i) => (
+                                            <li key={i}>
+                                                • {r.label}{" "}
+                                                <span className="text-slate-400">
+                                                    ({r.level})
+                                                </span>
+                                            </li>
                                         ))}
                                     </ul>
                                 }
@@ -451,13 +416,7 @@ function DashboardBody({ data }: { data: MedicalData }) {
                                 iconColor="text-orange-500"
                                 title="Symptoms / Stress"
                                 badge="R"
-                                body={
-                                    <>
-                                        Stress: {stress}. Intermittent acidity
-                                        and bloating; severe work fatigue Day 7
-                                        (microsleep in meeting).
-                                    </>
-                                }
+                                body={<>Stress level: {stress}</>}
                             />
                             <InsightCard
                                 icon={Target}
@@ -486,36 +445,46 @@ function DashboardBody({ data }: { data: MedicalData }) {
                                 Risk / Attention Flags
                             </h3>
                             <div className="space-y-2">
-                                {riskSeverities.map((r, i) => (
-                                    <div
-                                        key={i}
-                                        className={`flex items-start justify-between gap-2 rounded-xl px-3 py-2.5 text-xs ${
-                                            r.level === "High"
-                                                ? "bg-red-50 text-red-800"
-                                                : "bg-amber-50 text-amber-800"
-                                        }`}
-                                    >
-                                        <span className="leading-relaxed">
-                                            {r.label}
-                                        </span>
-                                        <span
-                                            className={`shrink-0 inline-flex items-center gap-1 font-medium ${
-                                                r.level === "High"
-                                                    ? "text-red-600"
-                                                    : "text-amber-600"
+                                {riskSeverities.map((r, i) => {
+                                    const isHigh = r.level === "High";
+                                    const isLow = r.level === "Low";
+                                    return (
+                                        <div
+                                            key={i}
+                                            className={`flex items-start justify-between gap-2 rounded-xl px-3 py-2.5 text-xs ${
+                                                isHigh
+                                                    ? "bg-red-50 text-red-800"
+                                                    : isLow
+                                                      ? "bg-emerald-50 text-emerald-800"
+                                                      : "bg-amber-50 text-amber-800"
                                             }`}
                                         >
+                                            <span className="leading-relaxed">
+                                                {r.label}
+                                            </span>
                                             <span
-                                                className={`w-1.5 h-1.5 rounded-full ${
-                                                    r.level === "High"
-                                                        ? "bg-red-500"
-                                                        : "bg-amber-500"
+                                                className={`shrink-0 inline-flex items-center gap-1 font-medium ${
+                                                    isHigh
+                                                        ? "text-red-600"
+                                                        : isLow
+                                                          ? "text-emerald-600"
+                                                          : "text-amber-600"
                                                 }`}
-                                            />
-                                            {r.level}
-                                        </span>
-                                    </div>
-                                ))}
+                                            >
+                                                <span
+                                                    className={`w-1.5 h-1.5 rounded-full ${
+                                                        isHigh
+                                                            ? "bg-red-500"
+                                                            : isLow
+                                                              ? "bg-emerald-500"
+                                                              : "bg-amber-500"
+                                                    }`}
+                                                />
+                                                {r.level}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
 
@@ -535,7 +504,16 @@ function DashboardBody({ data }: { data: MedicalData }) {
                                             <p className="text-xs text-slate-700 leading-relaxed italic">
                                                 &ldquo;{e.quote}&rdquo;
                                             </p>
-                                            <EvidenceBadge type={e.type} />
+                                            <EvidenceBadge
+                                                type={
+                                                    e.type === "F" ||
+                                                    e.type === "R" ||
+                                                    e.type === "I" ||
+                                                    e.type === "M"
+                                                        ? e.type
+                                                        : "I"
+                                                }
+                                            />
                                         </div>
                                         <p className="text-[10px] text-slate-400 mt-1.5">
                                             — {e.day}

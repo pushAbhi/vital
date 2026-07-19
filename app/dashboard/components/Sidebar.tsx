@@ -29,14 +29,16 @@ export default function Sidebar() {
 
     return (
         <aside
-            className={`sidebar ${collapsed ? "collapsed" : ""} flex flex-col h-screen sticky top-0 bg-[#0B1F3A] text-white shrink-0 ${
-                collapsed ? "w-[72px]" : "w-[240px]"
+            className={`sidebar ${collapsed ? "collapsed" : ""} flex flex-col h-screen sticky top-0 bg-navy text-white shrink-0 ${
+                collapsed ? "w-18" : "w-60"
             }`}
         >
             {/* Brand */}
             <div
                 className={`flex items-center h-16 border-b border-white/10 ${
-                    collapsed ? "flex-col justify-center gap-1 py-2 h-auto min-h-16" : "gap-3 px-4"
+                    collapsed
+                        ? "flex-col justify-center gap-1 py-2 h-auto min-h-16"
+                        : "gap-3 px-4"
                 }`}
             >
                 <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-white/10 shrink-0">
@@ -51,7 +53,9 @@ export default function Sidebar() {
                     className={`p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors ${
                         collapsed ? "" : "ml-auto"
                     }`}
-                    aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+                    aria-label={
+                        collapsed ? "Expand sidebar" : "Collapse sidebar"
+                    }
                 >
                     {collapsed ? (
                         <PanelLeftOpen className="w-4 h-4" />
@@ -74,7 +78,7 @@ export default function Sidebar() {
                                     : "text-white/70 hover:bg-white/10 hover:text-white"
                             }`}
                         >
-                            <Icon className="w-[18px] h-[18px] shrink-0" />
+                            <Icon className="w-4.5 h-4.5 shrink-0" />
                             <span className="sidebar-label">{item.label}</span>
                         </div>
                     );
@@ -88,7 +92,9 @@ export default function Sidebar() {
                         CD
                     </div>
                     <div className="sidebar-label min-w-0">
-                        <p className="text-sm font-medium truncate">Coach Demo</p>
+                        <p className="text-sm font-medium truncate">
+                            Coach Demo
+                        </p>
                         <p className="text-xs text-white/50">Coach</p>
                     </div>
                 </div>

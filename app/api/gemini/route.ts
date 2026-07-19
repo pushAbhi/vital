@@ -11,18 +11,32 @@ export async function POST(request: Request) {
             model: "gemini-3.5-flash",
             contents: prompt,
             config: {
-                systemInstruction:
-                    "You are an expert medical AI assistant, You will be given an conversation between a patient(CLIENT) and medical COACH Analyse the weekly conversation between and answer professionally",
+                systemInstruction: `You are an expert clinical coaching intelligence assistant.
+You will be given an anonymised conversation between a CLIENT and a health COACH (and sometimes an Accountability Coach).
+
+Analyse the full conversation and return structured client intelligence.
+
+Rules:
+- Ground findings in the conversation. Prefer numbers and quotes that actually appear.
+- Distinguish evidence types for supportingEvidence.type:
+  F = Confirmed Fact (objective metric or coach-confirmed),
+  R = Client Reported,
+  I = AI Inference,
+  M = Missing / unavailable.
+- For riskSeverities.level use only: High, Medium, or Low.
+- supportingEvidence.quote must be near-verbatim excerpts from the conversation.
+- supportingEvidence.day should reference the day label if present (e.g. "Day 3"), otherwise a short source note.
+- Do not invent metrics that were never mentioned; if sparse, say so in summaries and mark type M where appropriate.
+- Be concise and professional. No medical diagnosis language.`,
                 temperature: 0.2,
-
                 responseMimeType: "application/json",
-
                 responseSchema: {
                     type: Type.OBJECT,
                     properties: {
                         diagonosysSummary: {
                             type: Type.ARRAY,
-                            description: "Lists of Weekly Client Summary",
+                            description:
+                                "Weekly client summary bullet points (3–6 items) grounded in the conversation",
                             items: {
                                 type: Type.STRING,
                             },
@@ -30,50 +44,42 @@ export async function POST(request: Request) {
                         nutritionAdherence: {
                             type: Type.INTEGER,
                             description:
-                                "how much patient have been adhering to suggested diet by COACH, mathematical percentage integer 0 to 100",
+                                "Estimated diet adherence percentage 0–100 based on coach guidance vs client reports",
                         },
                         exerciseSteps: {
                             type: Type.INTEGER,
                             description:
-                                "Average steps CLIENT have been taking",
+                                "Average daily steps when reported; estimate only from mentioned figures",
                         },
                         sleepAmount: {
                             type: Type.NUMBER,
                             description:
-                                "Amount of hours CLIENT been sleeping, ex - 6.2",
+                                "Average sleep hours (e.g. 5.9) from reported nights",
                         },
                         waterIntake: {
                             type: Type.NUMBER,
                             description:
-                                "how much water CLIENT been drinking Liter/day",
+                                "Average water intake in litres/day from reported values",
                         },
                         symptomsStress: {
                             type: Type.STRING,
                             description:
-                                "Stress level of CLIENT : Low/Moderate/high",
+                                "Stress / symptom burden level: Low, Moderate, or High",
                         },
                         engagementLevel: {
                             type: Type.STRING,
                             description:
-                                "how much CLIENT been engaging daily with COACH, output : Bad/Moderate/Good",
+                                "Client engagement with coach updates: Bad, Moderate, or Good",
                         },
                         keyBarriers: {
                             type: Type.STRING,
                             description:
-                                "the main obstacles preventing the client from achieving their health or fitness goals. word limit 20 to 50",
+                                "Main obstacles to goals (20–50 words), grounded in conversation",
                         },
                         pendingActions: {
                             type: Type.ARRAY,
                             description:
-                                "list of necessary things clients has missed, TODO list",
-                            items: {
-                                type: Type.STRING,
-                            },
-                        },
-                        risksAndAttentionFlags: {
-                            type: Type.ARRAY,
-                            description:
-                                "issues that deserve the coach's immediate or special attention because they may negatively affect the client's health, safety, or progress",
+                                "Outstanding client TODOs / missed habits to follow up",
                             items: {
                                 type: Type.STRING,
                             },
@@ -81,9 +87,78 @@ export async function POST(request: Request) {
                         recommendedActions: {
                             type: Type.STRING,
                             description:
-                                "Recommended next Actions for Coach, word limit: 30 to 60",
+                                "Recommended next action for the coach (30–60 words)",
+                        },
+                        keyTakeaway: {
+                            type: Type.STRING,
+                            description:
+                                "One concise paragraph (2–4 sentences) capturing the most important overall insight for the coach",
+                        },
+                        supportingEvidence: {
+                            type: Type.ARRAY,
+                            description:
+                                "3–8 supporting quotes from the original conversation with evidence type",
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    quote: {
+                                        type: Type.STRING,
+                                        description:
+                                            "Near-verbatim quote from the conversation",
+                                    },
+                                    day: {
+                                        type: Type.STRING,
+                                        description:
+                                            "Day label or short source reference (e.g. Day 7)",
+                                    },
+                                    type: {
+                                        type: Type.STRING,
+                                        description:
+                                            "Evidence type: F, R, I, or M",
+                                        enum: ["F", "R", "I", "M"],
+                                    },
+                                },
+                                required: ["quote", "day", "type"],
+                            },
+                        },
+                        riskSeverities: {
+                            type: Type.ARRAY,
+                            description:
+                                "Risk / attention flags with severity for coach prioritisation",
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    label: {
+                                        type: Type.STRING,
+                                        description:
+                                            "Short description of the risk or attention flag",
+                                    },
+                                    level: {
+                                        type: Type.STRING,
+                                        description:
+                                            "Severity: High, Medium, or Low",
+                                        enum: ["High", "Medium", "Low"],
+                                    },
+                                },
+                                required: ["label", "level"],
+                            },
                         },
                     },
+                    required: [
+                        "diagonosysSummary",
+                        "nutritionAdherence",
+                        "exerciseSteps",
+                        "sleepAmount",
+                        "waterIntake",
+                        "symptomsStress",
+                        "engagementLevel",
+                        "keyBarriers",
+                        "pendingActions",
+                        "recommendedActions",
+                        "keyTakeaway",
+                        "supportingEvidence",
+                        "riskSeverities",
+                    ],
                 },
             },
         });

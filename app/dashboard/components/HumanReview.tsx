@@ -7,9 +7,9 @@ import { Check, Pencil, X } from "lucide-react";
 export default function HumanReview() {
     const router = useRouter();
     const [visible, setVisible] = useState(true);
-    const [selected, setSelected] = useState<"approve" | "edit" | "reject" | null>(
-        null,
-    );
+    const [selected, setSelected] = useState<
+        "approve" | "edit" | "reject" | null
+    >(null);
 
     if (!visible) return null;
 
@@ -31,7 +31,7 @@ export default function HumanReview() {
     return (
         <section className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
             <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                <div className="min-w-[180px]">
+                <div className="min-w-45">
                     <h3 className="text-sm font-semibold text-slate-800">
                         Human Review
                     </h3>
