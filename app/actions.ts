@@ -34,7 +34,6 @@ export async function handleFormSubmit(
         const data = await response.json();
 
         console.log("Data from API route : ", data);
-        console.log("AI Output Text:", data.text);
 
         return { success: true, error: null };
     } catch (err) {
