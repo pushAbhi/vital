@@ -8,7 +8,7 @@ export async function POST(request: Request) {
         const { prompt } = await request.json();
 
         const response = await ai.models.generateContent({
-            model: "gemini-3.5-flash",
+            model: "gemini-3-flash-preview",
             contents: prompt,
             config: {
                 systemInstruction: `You are an expert clinical coaching intelligence assistant.
@@ -36,7 +36,7 @@ Rules:
                         diagonosysSummary: {
                             type: Type.ARRAY,
                             description:
-                                "Weekly client summary bullet points (3–6 items) grounded in the conversation",
+                                "Weekly client summary bullet points (3-6 items) grounded in the conversation",
                             items: {
                                 type: Type.STRING,
                             },
@@ -44,7 +44,7 @@ Rules:
                         nutritionAdherence: {
                             type: Type.INTEGER,
                             description:
-                                "Estimated diet adherence percentage 0–100 based on coach guidance vs client reports",
+                                "Estimated diet adherence percentage 0-100 based on coach guidance vs client reports",
                         },
                         exerciseSteps: {
                             type: Type.INTEGER,
@@ -74,7 +74,7 @@ Rules:
                         keyBarriers: {
                             type: Type.STRING,
                             description:
-                                "Main obstacles to goals (20–50 words), grounded in conversation",
+                                "Main obstacles to goals (20-50 words), grounded in conversation",
                         },
                         pendingActions: {
                             type: Type.ARRAY,
@@ -87,12 +87,12 @@ Rules:
                         recommendedActions: {
                             type: Type.STRING,
                             description:
-                                "Recommended next action for the coach (30–60 words)",
+                                "Recommended next action for the coach (30-60 words)",
                         },
                         keyTakeaway: {
                             type: Type.STRING,
                             description:
-                                "One concise paragraph (2–4 sentences) capturing the most important overall insight for the coach",
+                                "One concise paragraph (2-4 sentences) capturing the most important overall insight for the coach",
                         },
                         supportingEvidence: {
                             type: Type.ARRAY,
