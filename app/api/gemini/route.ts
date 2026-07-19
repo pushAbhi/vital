@@ -167,13 +167,23 @@ Rules:
     } catch (error: unknown) {
         // Gemini Error Handling
         if (error instanceof ApiError) {
-            // Error: Out of token
-            if (error?.status === 429) {
-                return NextResponse.json(
-                    { error: "Developer out of tokens 😖" },
-                    { status: 429 },
-                );
-            }
+            const status = error.status;
+
+            const errorMessages: Record<number, string> = {
+                400: "The request body is malformed. Or Gemini free tier is not available in your country. Enable billing in Google AI Studio.",
+                403: "Your API key doesn't have the required permissions.",
+                404: "The requested resource wasn't found.",
+                429: "Developer out of tokens 😖", // Rate limit / quota
+                499: "The operation was cancelled.",
+                500: "Your input context is too long.",
+                503: "Service temporarily unavailable or overloaded.",
+                504: "Service timeout - unable to finish processing.",
+            };
+
+            const message =
+                errorMessages[status] || error.message || "Gemini API error";
+
+            return NextResponse.json({ error: message }, { status });
         }
 
         console.error(`ERROR  : ${error}`);
