@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { GoogleGenAI, Type } from "@google/genai";
+import { ApiError, GoogleGenAI, Type } from "@google/genai";
 
 const ai = new GoogleGenAI({});
 
@@ -164,8 +164,20 @@ Rules:
         });
 
         return NextResponse.json({ text: response.text });
-    } catch (error) {
-        console.log(`ERROR  : ${error}`);
+    } catch (error: unknown) {
+        // Gemini Error Handling
+        if (error instanceof ApiError) {
+            // Error: Out of token
+            if (error?.status === 429) {
+                return NextResponse.json(
+                    { error: "Developer out of tokens 😖" },
+                    { status: 429 },
+                );
+            }
+        }
+
+        console.error(`ERROR  : ${error}`);
+
         return NextResponse.json(
             { error: "Failed to generate content" },
             { status: 500 },

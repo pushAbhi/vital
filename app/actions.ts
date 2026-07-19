@@ -63,7 +63,7 @@ export async function handleFormSubmit(
         });
 
         if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
+            console.log("Response not ok");
         }
 
         const payload = await response.json();
@@ -76,10 +76,12 @@ export async function handleFormSubmit(
 
         return { success: true, error: null, data: medicalData };
     } catch (err) {
-        console.log(`Error: ${err}`);
+        console.log(`\nError: ${err}`);
         return {
             success: false,
-            error: "Something went wrong analysing the conversation.",
+            error:
+                String(err) ||
+                "Something went wrong analysing the conversation.",
             data: null,
         };
     }
