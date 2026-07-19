@@ -3,6 +3,21 @@
 interface FormState {
     success: boolean;
     error: string | null;
+    data?: MedicalData | null;
+}
+
+export interface MedicalData {
+    diagnosysSummary: string[];
+    nutritionAdherence: number;
+    exerciseSteps: number;
+    sleepAmount: number;
+    waterIntake: number;
+    symptomsStress: string;
+    engagementLevel: string;
+    keyBarriers: string;
+    pendingActions: string[];
+    risksAndAttentionFlags: string[];
+    recommendedActions: string;
 }
 
 export async function handleFormSubmit(
@@ -33,9 +48,11 @@ export async function handleFormSubmit(
 
         const data = await response.json();
 
-        console.log("Data from API route : ", data);
+        const medicalData: MedicalData = JSON.parse(data.text);
 
-        return { success: true, error: null };
+        console.log("Data from API route : ", medicalData);
+
+        return { success: true, error: null, data: medicalData };
     } catch (err) {
         console.log(`Error: ${err}`);
         return { success: false, error: "Something went wrong." };

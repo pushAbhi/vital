@@ -7,7 +7,10 @@ export default function Form() {
     const [state, formAction, isPending] = useActionState(handleFormSubmit, {
         success: false,
         error: null,
+        data: null,
     });
+
+    const medicalData = state.data;
 
     return (
         <form
@@ -24,6 +27,7 @@ export default function Form() {
                 <button type="submit" disabled={isPending}>
                     {isPending ? "Analysing..." : "Analyse"}
                 </button>
+                <span>Summary : {medicalData?.exerciseSteps}</span>
             </div>
         </form>
     );
