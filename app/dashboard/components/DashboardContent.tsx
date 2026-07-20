@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type ElementType, type ReactNode } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
     Utensils,
@@ -25,6 +25,7 @@ import type { MedicalData } from "../../actions";
 import EvidenceBadge, { EvidenceLegend } from "./EvidenceBadge";
 import HumanReview from "./HumanReview";
 import Sidebar from "./Sidebar";
+import MetricCard, { InsightCard } from "./ui/Cards";
 
 function nutritionLabel(pct: number) {
     if (pct >= 80) return { text: "Good", color: "text-emerald-600" };
@@ -56,76 +57,6 @@ function engagementColor(level: string) {
     if (l.includes("good")) return "text-emerald-600";
     if (l.includes("moderate") || l.includes("medium")) return "text-amber-600";
     return "text-red-600";
-}
-
-function MetricCard({
-    icon: Icon,
-    iconColor,
-    label,
-    value,
-    sub,
-    subColor,
-}: {
-    icon: ElementType;
-    iconColor: string;
-    label: string;
-    value: string;
-    sub: string;
-    subColor: string;
-}) {
-    return (
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-            <p className="text-xs font-medium text-slate-500 mb-3">{label}</p>
-            <div className="flex items-center gap-3">
-                <Icon className={`w-5 h-5 ${iconColor}`} />
-                <div>
-                    <p className="text-xl font-semibold text-slate-800 leading-none">
-                        {value}
-                    </p>
-                    <p className={`text-xs mt-1 ${subColor}`}>{sub}</p>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-function InsightCard({
-    icon: Icon,
-    iconBg,
-    iconColor,
-    title,
-    body,
-    badge,
-}: {
-    icon: ElementType;
-    iconBg: string;
-    iconColor: string;
-    title: string;
-    body: ReactNode;
-    badge: "F" | "R" | "I" | "M";
-}) {
-    return (
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-                <div
-                    className={`flex items-center justify-center w-9 h-9 rounded-xl shrink-0 ${iconBg}`}
-                >
-                    <Icon className={`w-4 h-4 ${iconColor}`} />
-                </div>
-                <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2 mb-1">
-                        <h4 className="text-sm font-semibold text-slate-800">
-                            {title}
-                        </h4>
-                        <EvidenceBadge type={badge} />
-                    </div>
-                    <div className="text-xs text-slate-600 leading-relaxed">
-                        {body}
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
 }
 
 function DashboardBody({ data }: { data: MedicalData }) {
@@ -199,12 +130,12 @@ function DashboardBody({ data }: { data: MedicalData }) {
                                 {/*hardcoded*/}
                                 <span className="inline-flex items-center gap-1">
                                     <Calendar className="w-3.5 h-3.5" />
-                                    Week: Day 1 – Day 8
+                                    Week: Day 1 - Day 8
                                 </span>
                                 {/*hardcoded*/}
                                 <span className="inline-flex items-center gap-1">
                                     <MessageCircle className="w-3.5 h-3.5" />
-                                    Source: Client–Coach Conversation
+                                    Source: Client-Coach Conversation
                                 </span>
                             </div>
                         </div>
@@ -359,7 +290,7 @@ function DashboardBody({ data }: { data: MedicalData }) {
                                 body={
                                     <>
                                         Avg sleep ~{sleep} hrs/night. Multiple
-                                        nights ~5–5.5 hrs; improved to ~8 hrs on
+                                        nights ~5-5.5 hrs; improved to ~8 hrs on
                                         Day 8.
                                     </>
                                 }
