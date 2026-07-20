@@ -41,8 +41,8 @@ export default function LandingForm() {
                             Conversation
                         </label>
                         <button
-                            className="block text-sm font-medium text-red-400 mb-2 hover:cursor-pointer"
                             type="button"
+                            className="block text-sm font-medium text-red-400 mb-4 hover:cursor-pointer border border-black/40 px-3 py-2 rounded-xl shadow-sm shadow-black/40 hover:bg-black/3 hover:text-red-500"
                             onClick={pasteExampleScript}
                         >
                             Paste example script
@@ -54,9 +54,10 @@ export default function LandingForm() {
                         required
                         rows={12}
                         placeholder="Paste the client-coach conversation here…"
-                        className="w-full resize-y rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/20 focus:border-navy transition-shadow"
+                        className="w-full resize-y rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/20 focus:border-navy transition-shadow"
                         disabled={isPending}
-                        defaultValue={textAreaValue}
+                        value={textAreaValue}
+                        onChange={(e) => setTextAreaValue(e.target.value)}
                     ></textarea>
 
                     {state.error && (
