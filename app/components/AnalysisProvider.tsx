@@ -9,11 +9,8 @@ import {
 } from "react";
 import { useActionState } from "react";
 import { useRouter } from "next/navigation";
-import {
-    handleFormSubmit,
-    type FormState,
-    type MedicalData,
-} from "../actions";
+import { handleFormSubmit } from "../actions";
+import { FormState, MedicalData } from "../types";
 
 interface AnalysisContextValue {
     state: FormState;
