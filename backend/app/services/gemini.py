@@ -1,23 +1,12 @@
 from google import genai
-from dotenv import load_dotenv
 from app.core.config import settings
 from pydantic import BaseModel, Field
 from typing import Literal
 from google.genai import errors as genai_errors # type: ignore
 import logging
-from enum import StrEnum
 
 logger = logging.getLogger(__name__)
 
-class GeminiModel(StrEnum):
-    # Standard Flagship Tier
-    FLASH = "gemini-3.5-flash"
-    FLASH_PREVIEW = "gemini-3-flash-preview"
-    
-    # High-Efficiency / Low-Cost Tiers
-    FLASH_LITE = "gemini-3.1-flash-lite"
-    FLASH_LITE_PREVIEW = "gemini-3.1-flash-lite-preview"
-    
 GEMINI_ERROR_MESSAGES: dict[int | str, str] = {
     400: "The request body is malformed. Or Gemini free tier is not available in your country. Enable billing in Google AI Studio.",
     403: "Your API key doesn't have the required permissions.",
@@ -79,19 +68,19 @@ class ClientIntelligence(BaseModel) :
 
 client = genai.Client(api_key = settings.GEMINI_API_KEY)
 
-async def ask_gemini(prompt: str) -> str:
+async def ask_gemini(prompt: str, model: str) -> str:
     response = client.models.generate_content(
-        model=GeminiModel.FLASH,
+        model=model,
         contents = prompt,
     )
     return response.text
 
-async def analyze_gemini(conversation: str) -> ClientIntelligence:
+async def analyze_gemini(model: str, conversation: str) -> ClientIntelligence:
     try :
         # test error - uncomment to test
         # raise genai_errors.ServerError(429, {"error": {"message": "fake 503"}}, None)
         response = client.models.generate_content(
-            model=GeminiModel.FLASH,
+            model=model,
             contents = conversation,
             config = {
                 "system_instruction": SYSTEM_PROMPT,
