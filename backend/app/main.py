@@ -1,8 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
-
-load_dotenv()
+from app.api.gemini_router.routes import router as gemini_router
 
 app = FastAPI(
     title="Vital API",
@@ -26,3 +24,5 @@ async def root():
 @app.get("/health")
 async def health():
     return {"status": "healthy", "python": "3.14"}
+
+app.include_router(gemini_router)

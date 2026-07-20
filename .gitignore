@@ -3,7 +3,9 @@
 
 ## Backend fluff
 /backend/app/__pycache__
-
+/backend/**/__pycache__
+/backend/**/*.pyc
+/backend/venv/
 
 ## Frontend fluff
 # dependencies
