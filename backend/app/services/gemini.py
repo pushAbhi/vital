@@ -62,7 +62,7 @@ class ClientIntelligence(BaseModel) :
     engagementLevel: str = Field(description="Client engagement with coach updates: Bad, Moderate, or Good")
     keyBarriers: str = Field(description="Main obstacles to goals (20-50 words), grounded in conversation")
     pendingActions: list[str] = Field(description="Outstanding client TODOs / missed habits to follow up")
-    recommendedActions: str = Field(discriminaton="Recommended next action for the coach (30-60 words)")
+    recommendedActions: str = Field(description="Recommended next action for the coach (30-60 words)")
     keyTakeaway: str = Field(description="One concise paragraph (2-4 sentences) capturing the most important overall insight for the coach")
     supportingEvidence: list[Evidence] = Field(description="3-8 supporting quotes from the original conversation with evidence type")
     riskSeverity: list[RiskSeverity] = Field(description="Risk / attention flags with severity for coach prioritisation")
