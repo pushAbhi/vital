@@ -1,7 +1,7 @@
 from google import genai
 from app.core.config import settings
 from pydantic import BaseModel, Field
-from typing import Literal
+from typing import Literal, Optional
 from google.genai import errors as genai_errors # type: ignore
 import logging
 
@@ -53,10 +53,10 @@ class RiskSeverity(BaseModel):
 # Response Schema of AI
 class ClientIntelligence(BaseModel) :
     weekSummary: list[str] = Field(description="Weekly client summary bullet points (3-6 items) grounded in the conversation")
-    nutritionAdherence: int = Field(description="Estimated diet adherence percentage 0-100 based on coach guidance vs client reports")
-    exerciseSteps: int = Field(description="Average daily steps when reported; estimate only from mentioned figures")
-    sleepAmount: float = Field(description="Average sleep hours (e.g. 5.9) from reported nights")
-    waterIntake: float = Field(description="Average water intake in litres/day from reported values")
+    nutritionAdherence: Optional[int] = Field(description="Estimated diet adherence percentage 0-100 based on coach guidance vs client reports")
+    exerciseSteps: Optional[int] = Field(description="Average daily steps when reported; estimate only from mentioned figures")
+    sleepAmount: Optional[float] = Field(description="Average sleep hours (e.g. 5.9) from reported nights")
+    waterIntake: Optional[float] = Field(description="Average water intake in litres/day from reported values")
     symptomsStress: str = Field(description="Stress / symptom burden level: Low, Moderate, or High")
     engagementLevel: str = Field(description="Client engagement with coach updates: Bad, Moderate, or Good")
     keyBarriers: str = Field(description="Main obstacles to goals (20-50 words), grounded in conversation")
