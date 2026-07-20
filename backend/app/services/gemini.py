@@ -82,7 +82,7 @@ async def analyze_gemini(conversation: str, model: str) -> ClientIntelligence:
             contents = conversation,
             config = {
                 "system_instruction": SYSTEM_PROMPT,
-                "temperature" : 0.2,
+                "temperature" : 0,
                 "response_mime_type": "application/json",
                 "response_schema" : ClientIntelligence,
             }
