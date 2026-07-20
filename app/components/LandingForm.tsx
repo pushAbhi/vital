@@ -1,10 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { useAnalysis } from "./AnalysisProvider";
 import { Loader2, Sparkles } from "lucide-react";
+import { exampleScript1 } from "./ExampleScripts";
 
 export default function LandingForm() {
     const { formAction, isPending, state } = useAnalysis();
+    const [textAreaValue, setTextAreaValue] = useState<string>("");
+
+    function pasteExampleScript() {
+        setTextAreaValue(exampleScript1);
+    }
 
     return (
         <div className="min-h-screen w-full flex items-center justify-center bg-surface px-4">
@@ -26,12 +33,21 @@ export default function LandingForm() {
                     action={formAction}
                     className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6"
                 >
-                    <label
-                        htmlFor="content"
-                        className="block text-sm font-medium text-slate-700 mb-2"
-                    >
-                        Conversation
-                    </label>
+                    <div className="flex justify-between items-center">
+                        <label
+                            htmlFor="content"
+                            className="block text-md font-medium text-slate-700 mb-2"
+                        >
+                            Conversation
+                        </label>
+                        <button
+                            className="block text-sm font-medium text-red-400 mb-2 hover:cursor-pointer"
+                            type="button"
+                            onClick={pasteExampleScript}
+                        >
+                            Paste example script
+                        </button>
+                    </div>
                     <textarea
                         id="content"
                         name="content"
@@ -40,7 +56,9 @@ export default function LandingForm() {
                         placeholder="Paste the client-coach conversation here…"
                         className="w-full resize-y rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/20 focus:border-navy transition-shadow"
                         disabled={isPending}
-                    />
+                        defaultValue={textAreaValue}
+                        value={textAreaValue}
+                    ></textarea>
 
                     {state.error && (
                         <p className="mt-3 text-sm text-red-600" role="alert">
