@@ -75,10 +75,8 @@ async def ask_gemini(prompt: str, model: str) -> str:
     )
     return response.text
 
-async def analyze_gemini(model: str, conversation: str) -> ClientIntelligence:
+async def analyze_gemini(conversation: str, model: str) -> ClientIntelligence:
     try :
-        # test error - uncomment to test
-        # raise genai_errors.ServerError(429, {"error": {"message": "fake 503"}}, None)
         response = client.models.generate_content(
             model=model,
             contents = conversation,

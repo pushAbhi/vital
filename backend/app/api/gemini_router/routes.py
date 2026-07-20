@@ -24,4 +24,4 @@ async def ask(prompt: str, model = CURRENT_MODEL):
 
 @router.post("/analyze")
 async def analyze(conversation: str, model = CURRENT_MODEL):
-    return {"response" : await analyze_gemini(conversation, model)}
+    return await analyze_gemini(conversation, model)
