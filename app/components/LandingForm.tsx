@@ -57,7 +57,6 @@ export default function LandingForm() {
                         className="w-full resize-y rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/20 focus:border-navy transition-shadow"
                         disabled={isPending}
                         defaultValue={textAreaValue}
-                        value={textAreaValue}
                     ></textarea>
 
                     {state.error && (
