@@ -18,22 +18,22 @@ Client: Walk and water done.
 Client: Can I have banana stem, mint and ginger juice?
 Coach: Yes.
 Client: Tea 1 cup and 1 apple.
-Client: Didn’t eat much in the evening. Just a small piece of paneer.
+Client: Didn't eat much in the evening. Just a small piece of paneer.
 Client: Still having acidity and bloating.
-Coach: Please don’t skip meals completely. Try to keep the meals simple.
+Coach: Please don't skip meals completely. Try to keep the meals simple.
 
 Day 3
 Client: I had to go to school after a few days. Very hectic morning.
 Client: Coconut water, tea, prunes and some seeds till now.
 Coach: Nothing else till now?
-Client: No. I didn’t get time.
+Client: No. I didn't get time.
 Coach: Slowly we need to adjust the routine around your school schedule also.
 Client: Yes. I know it will take time.
 Client: Lunch had lots of vegetables, curd and some protein.
 Client: Forgot ACV today. Not yet in the habit.
 Coach: Set a reminder around meal timings.
 Client: Yes, will do.
-Accountability Coach: Today’s update: Water 4 litres, Sleep 5 hours, Steps around 8,000, Exercise only walking.
+Accountability Coach: Today's update: Water 4 litres, Sleep 5 hours, Steps around 8,000, Exercise only walking.
 
 Day 4
 Client: Breakfast was 1.5 vegetable chapatis with seeds and ajwain.
@@ -47,10 +47,10 @@ Coach: Good. Chew properly and avoid rushing meals.
 Client: Did around 20 minutes walking, stretching and breathing today. Feeling really good.
 
 Day 5
-Client: Weight seems slightly up even though I’m eating almost half of what I used to eat.
+Client: Weight seems slightly up even though I'm eating almost half of what I used to eat.
 Coach: It is not always about eating less. Your body needs adequate nutrition.
 Coach: Protein seems low in breakfast on some days.
-Client: I didn’t have sprouts today. Have ordered them.
+Client: I didn't have sprouts today. Have ordered them.
 Coach: You can also have boiled chana, moong or chhole.
 Client: Forgot to mention, I had roasted chana at school.
 Client: Did 20 minutes stretching and running.
@@ -61,7 +61,7 @@ Client: Bloating is back and I feel like I have gained weight.
 Coach: Food intake was low today. Protein was also missing.
 Client: I had roasted chana and kala chana.
 Client: I am not getting enough time to plan meals. Next week should be easier.
-Coach: That could be one of the main barriers right now. Let’s keep the plan practical.
+Coach: That could be one of the main barriers right now. Let's keep the plan practical.
 
 Day 7
 Client: Steps 6,000 today.
@@ -86,6 +86,6 @@ Client: Steps around 8,000.
 Client: Weight is around 83 kg. Waist almost same.
 Client: Still having bloating on and off.
 Client: But overall energy is much better than before.
-Coach: That is good progress. Let’s continue tracking sleep, bloating, meals and movement consistently.
+Coach: That is good progress. Let's continue tracking sleep, bloating, meals and movement consistently.
 
 ` as string;

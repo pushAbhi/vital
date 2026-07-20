@@ -97,7 +97,7 @@ Rules:
                         supportingEvidence: {
                             type: Type.ARRAY,
                             description:
-                                "3–8 supporting quotes from the original conversation with evidence type",
+                                "3-8 supporting quotes from the original conversation with evidence type",
                             items: {
                                 type: Type.OBJECT,
                                 properties: {

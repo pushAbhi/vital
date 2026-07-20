@@ -1,4 +1,4 @@
-type EvidenceType = "F" | "R" | "I" | "M";
+import { EvidenceType } from "@/app/types";
 
 const styles: Record<EvidenceType, string> = {
     F: "bg-emerald-100 text-emerald-700",

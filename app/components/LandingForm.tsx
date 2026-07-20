@@ -24,7 +24,7 @@ export default function LandingForm() {
                         Vital
                     </h1>
                     <p className="mt-2 text-sm text-slate-500">
-                        Paste a client–coach conversation to generate client
+                        Paste a client-coach conversation to generate client
                         intelligence.
                     </p>
                 </div>
