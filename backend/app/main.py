@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.gemini_router.routes import router as gemini_router
+from app.api.system_router.routes import router as system_router
 
 app = FastAPI(
     title="Vital API",
@@ -17,12 +18,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-async def root():
-    return {"message": "Vital Backend is running 🔥"}
-
-@app.get("/health")
-async def health():
-    return {"status": "healthy", "python": "3.14"}
-
-app.include_router(gemini_router)
+app.include_router(system_router)   # / and /health
+app.include_router(gemini_router)   # /gemini
