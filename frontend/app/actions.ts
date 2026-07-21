@@ -7,10 +7,14 @@ const SECRET = process.env.FRONTEND_SECRET_KEY;
 
 if (!SECRET) {
     console.error("FRONTEND_SECRET_KEY not set.");
+} else {
+    console.log("FRONTEND_URL set.");
 }
 
 if (!BACKEND_URL) {
     console.error("BACKEND_URL not set.");
+} else {
+    console.log("BACKEND_URL set.");
 }
 
 export async function handleFormSubmit(
