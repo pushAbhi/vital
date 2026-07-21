@@ -5,18 +5,6 @@ import { FormState, MedicalData } from "./types";
 const BACKEND_URL = process.env.BACKEND_URL;
 const SECRET = process.env.FRONTEND_SECRET_KEY;
 
-if (!SECRET) {
-    console.error("FRONTEND_SECRET_KEY not set.");
-} else {
-    console.log("FRONTEND_URL set.");
-}
-
-if (!BACKEND_URL) {
-    console.error("BACKEND_URL not set.");
-} else {
-    console.log("BACKEND_URL set.");
-}
-
 export async function handleFormSubmit(
     _prevState: FormState,
     formData: FormData,
@@ -31,6 +19,17 @@ export async function handleFormSubmit(
         };
     }
 
+    if (!BACKEND_URL || !SECRET) {
+        console.error(
+            "Missing environment variables: BACKEND_URL or FRONTEND_SECRET_KEY",
+        );
+        return {
+            success: false,
+            error: "Server configuration error. Please contact support.",
+            data: null,
+        };
+    }
+
     try {
         const response = await fetch(`${BACKEND_URL}/analyze`, {
             method: "POST",
@@ -41,26 +40,29 @@ export async function handleFormSubmit(
             body: JSON.stringify({ conversation: content }),
         });
 
-        if (!response.ok) {
-            console.log("Response not ok", response);
-        }
-
         const payload = await response.json();
+
+        if (!response.ok) {
+            console.error(
+                `Backend failed with status ${response.status}:`,
+                payload.detail,
+            );
+            return { success: false, error: payload.detail, data: null };
+        }
 
         if (payload.error) {
             throw new Error(payload.error);
         }
 
         const medicalData: MedicalData = payload;
+        console.log("Successfully retrieved medical data:", medicalData);
 
         return { success: true, error: null, data: medicalData };
     } catch (err) {
         console.log(`\nError: ${err}`);
         return {
             success: false,
-            error:
-                String(err) ||
-                "Something went wrong analysing the conversation.",
+            error: "Something went wrong analysing the conversation.",
             data: null,
         };
     }

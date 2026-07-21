@@ -20,7 +20,7 @@ class AnalyzeRequest(BaseModel):
     conversation: str
 
 # To be removed later, Temporary stuff
-CURRENT_MODEL = GeminiModel.FLASH_PREVIEW
+CURRENT_MODEL = GeminiModel.FLASH_LITE
 
 @router.post("/ask")
 async def ask(prompt: str, model = CURRENT_MODEL, _: bool = Depends(verify_frontend)):

@@ -1,7 +1,9 @@
 from google import genai
-from app.core.config import settings
+from fastapi import HTTPException, status
 from google.genai import errors as genai_errors # type: ignore
 import logging
+
+from app.core.config import settings
 from app.services.ai_constants import SYSTEM_PROMPT, GEMINI_ERROR_MESSAGES, SAVE_TOKEN
 from app.models.ai_schemas import ClientIntelligence
 
@@ -38,6 +40,12 @@ async def analyze_gemini(conversation: str, model: str) -> ClientIntelligence:
         status = getattr(e, "code", None)
         message = GEMINI_ERROR_MESSAGES.get(status) or getattr(e, "message", "Gemini API error")
         logger.error("Gemini API error %s: %s", status, message)
+
+        raise HTTPException(
+            status_code=status,
+            detail=message,  # Sends string back in {"detail": "..."}
+        )
+
     except genai_errors.ClientError as e:
         logger.error("Gemini client error: %s", e.message)
     except Exception as e:
