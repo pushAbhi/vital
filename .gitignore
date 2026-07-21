@@ -1,6 +1,17 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+
+## Backend fluff
+/backend/app/__pycache__
+/backend/**/__pycache__
+/backend/**/*.pyc
+/backend/venv/
+
+## Frontend fluff
 # dependencies
+/frontend/node_modules
+/frontend/.next
+/frontend/app/generated
 /node_modules
 /.pnp
 .pnp.*
@@ -43,3 +54,5 @@ next-env.d.ts
 /app/generated/prisma
 
 /app/generated/prisma
+
+ignoreMe.txt

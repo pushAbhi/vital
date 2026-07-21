@@ -60,7 +60,7 @@ function engagementColor(level: string) {
 }
 
 function DashboardBody({ data }: { data: MedicalData }) {
-    const summary = data.diagonosysSummary ?? [];
+    const summary = data.diagnosisSummary ?? [];
     const nutrition = data.nutritionAdherence ?? 0;
     const steps = data.exerciseSteps ?? 0;
     const sleep = data.sleepAmount ?? 0;
@@ -425,7 +425,7 @@ function DashboardBody({ data }: { data: MedicalData }) {
                                     Supporting Evidence
                                 </h3>
                             </div>
-                            <div className="space-y-2">
+                            <div className="space-y-2 overflow-y-scroll min-h-20 max-h-80">
                                 {supportingEvidence.map((e, i) => (
                                     <div
                                         key={i}
