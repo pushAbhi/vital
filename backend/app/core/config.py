@@ -7,5 +7,6 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=BASE_DIR / ".env")
 
     GEMINI_API_KEY: str
+    FRONTEND_SECRET_KEY: str
 
 settings = Settings()

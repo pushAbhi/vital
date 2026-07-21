@@ -2,6 +2,17 @@
 
 import { FormState, MedicalData } from "./types";
 
+const BACKEND_URL = process.env.BACKEND_URL;
+const SECRET = process.env.FRONTEND_SECRET_KEY;
+
+if (!SECRET) {
+    console.error("FRONTEND_SECRET_KEY not set.");
+}
+
+if (!BACKEND_URL) {
+    console.error("BACKEND_URL not set.");
+}
+
 export async function handleFormSubmit(
     _prevState: FormState,
     formData: FormData,
@@ -17,12 +28,11 @@ export async function handleFormSubmit(
     }
 
     try {
-        const baseURL = "http://localhost:8000";
-
-        const response = await fetch(`${baseURL}/analyze`, {
+        const response = await fetch(`${BACKEND_URL}/analyze`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "X-Frontend-Key": SECRET!,
             },
             body: JSON.stringify({ conversation: content }),
         });

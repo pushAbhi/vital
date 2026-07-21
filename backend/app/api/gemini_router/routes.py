@@ -1,7 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from app.services.gemini import ask_gemini, analyze_gemini
 from enum import StrEnum
 from pydantic import BaseModel
+from app.core.security import verify_frontend
 
 router = APIRouter()
 
@@ -22,10 +23,10 @@ class AnalyzeRequest(BaseModel):
 CURRENT_MODEL = GeminiModel.FLASH_PREVIEW
 
 @router.post("/ask")
-async def ask(prompt: str, model = CURRENT_MODEL):
+async def ask(prompt: str, model = CURRENT_MODEL, _: bool = Depends(verify_frontend)):
     return {"response" : await ask_gemini(prompt, model)}
 
 @router.post("/analyze")
-async def analyze(data: AnalyzeRequest, model = CURRENT_MODEL):
+async def analyze(data: AnalyzeRequest, model = CURRENT_MODEL, _: bool = Depends(verify_frontend)):
     conversation = data.conversation
     return await analyze_gemini(conversation, model)

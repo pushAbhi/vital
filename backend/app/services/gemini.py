@@ -5,6 +5,7 @@ import logging
 from app.services.ai_constants import SYSTEM_PROMPT, GEMINI_ERROR_MESSAGES, SAVE_TOKEN
 from app.models.ai_schemas import ClientIntelligence
 
+
 logger = logging.getLogger(__name__)
 
 client = genai.Client(api_key = settings.GEMINI_API_KEY)
