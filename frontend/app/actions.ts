@@ -37,7 +37,6 @@ export async function handleFormSubmit(
             throw new Error(payload.error);
         }
 
-        console.log(payload);
         const medicalData: MedicalData = payload;
 
         return { success: true, error: null, data: medicalData };

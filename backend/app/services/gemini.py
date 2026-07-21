@@ -152,7 +152,7 @@ async def ask_gemini(prompt: str, model: str) -> str:
 async def analyze_gemini(conversation: str, model: str) -> ClientIntelligence:
     try :
         ## MOCK DATA - comment / uncomment
-        return SAVE_TOKEN
+        # return SAVE_TOKEN
     
         # --- Real AI API call ---
         response = client.models.generate_content(
