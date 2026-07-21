@@ -2,8 +2,8 @@ from google import genai
 from app.core.config import settings
 from google.genai import errors as genai_errors # type: ignore
 import logging
-from ai_constants import SYSTEM_PROMPT, GEMINI_ERROR_MESSAGES, SAVE_TOKEN
-from models.ai_schemas import ClientIntelligence
+from app.services.ai_constants import SYSTEM_PROMPT, GEMINI_ERROR_MESSAGES, SAVE_TOKEN
+from app.models.ai_schemas import ClientIntelligence
 
 logger = logging.getLogger(__name__)
 

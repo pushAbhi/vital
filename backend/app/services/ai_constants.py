@@ -1,4 +1,4 @@
-from models.ai_schemas import ClientIntelligence, Evidence, RiskSeverity
+from app.models.ai_schemas import ClientIntelligence, Evidence, RiskSeverity
 
 ## ---------------- AI CONSTANTS -------------------
 SAVE_TOKEN = ClientIntelligence(
