@@ -11,9 +11,8 @@ export interface RiskSeverity {
     label: string;
     level: RiskLevel;
 }
-
 export interface MedicalData {
-    diagonosysSummary: string[];
+    weekSummary: string[];
     nutritionAdherence: number;
     exerciseSteps: number;
     sleepAmount: number;
@@ -26,6 +25,7 @@ export interface MedicalData {
     keyTakeaway: string;
     supportingEvidence: SupportingEvidence[];
     riskSeverities: RiskSeverity[];
+    diagnosisSummary: string[];
 }
 
 export interface FormState {

@@ -17,19 +17,18 @@ export async function handleFormSubmit(
     }
 
     try {
-        const baseURL =
-            process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+        const baseURL = "http://localhost:8000";
 
-        const response = await fetch(`${baseURL}/api/gemini`, {
+        const response = await fetch(`${baseURL}/analyze`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ prompt: content }),
+            body: JSON.stringify({ conversation: content }),
         });
 
         if (!response.ok) {
-            console.log("Response not ok");
+            console.log("Response not ok", response);
         }
 
         const payload = await response.json();
@@ -38,7 +37,8 @@ export async function handleFormSubmit(
             throw new Error(payload.error);
         }
 
-        const medicalData: MedicalData = JSON.parse(payload.text);
+        console.log(payload);
+        const medicalData: MedicalData = payload;
 
         return { success: true, error: null, data: medicalData };
     } catch (err) {

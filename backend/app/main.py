@@ -3,6 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.gemini_router.routes import router as gemini_router
 from app.api.system_router.routes import router as system_router
 
+## RUN backend
+# ❯ source venv/bin/activate
+# ❯ uvicorn app.main:app --reload
+
 app = FastAPI(
     title="Vital API",
     description="AI Healthcare Coaching Backend",

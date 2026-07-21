@@ -7,6 +7,108 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+## Evidence Codes
+# F - Confirmed Fact
+# R - Client Reported
+# I - AI Inference
+# M - Missing / unavailable
+class Evidence(BaseModel) :
+    quote: str = Field(description="Near-verbatim quote from the conversation")
+    day: str = Field(description="Day label or short source reference (e.g. Day 7)")
+    type: Literal["F", "R", "I", "M"] = Field(description="Evidence type: F - Confirmed Fact, R - Client Reported, I - AI Inference, or M - Missing/Unavailable")
+
+# Response Schema of AI
+class ClientIntelligence(BaseModel) :
+    weekSummary: list[str] = Field(description="Weekly client summary bullet points (3-6 items) grounded in the conversation")
+    nutritionAdherence: Optional[int] = Field(description="Estimated diet adherence percentage 0-100 based on coach guidance vs client reports")
+    exerciseSteps: Optional[int] = Field(description="Average daily steps when reported; estimate only from mentioned figures")
+    sleepAmount: Optional[float] = Field(description="Average sleep hours (e.g. 5.9) from reported nights")
+    waterIntake: Optional[float] = Field(description="Average water intake in litres/day from reported values")
+    symptomsStress: str = Field(description="Stress / symptom burden level: Low, Moderate, or High")
+    engagementLevel: str = Field(description="Client engagement with coach updates: Bad, Moderate, or Good")
+    keyBarriers: str = Field(description="Main obstacles to goals (20-50 words), grounded in conversation")
+    pendingActions: list[str] = Field(description="Outstanding client TODOs / missed habits to follow up")
+    recommendedActions: str = Field(description="Recommended next action for the coach (30-60 words)")
+    keyTakeaway: str = Field(description="One concise paragraph (2-4 sentences) capturing the most important overall insight for the coach")
+    supportingEvidence: list[Evidence] = Field(description="3-8 supporting quotes from the original conversation with evidence type")
+    riskSeverities: list[RiskSeverity] = Field(description="Risk / attention flags with severity for coach prioritisation")
+    diagnosysSummary: list[str] = Field(
+        default=[], 
+        description="Key diagnostic summary bullet points or health observations derived from the conversation"
+    )
+
+class RiskSeverity(BaseModel):
+    label: str = Field(description="Short description of the risk or attention flag")
+    level: Literal["High", "Medium", "Low"] = Field(description="Severity: High, Medium, or Low")
+
+SAVE_TOKEN = ClientIntelligence(
+    weekSummary=[
+        "Client is experiencing significant work-related stress and 'office politics,' leading to extreme fatigue and a reported incident of falling asleep during a meeting.",
+        "Sleep deprivation is a major concern, with the client averaging under 6 hours for most of the week due to family and work pressures.",
+        "Persistent digestive issues including acidity and bloating are frequently reported, often linked by the client to poor sleep and irregular meal timings.",
+        "Nutrition is inconsistent; the client tends to undereat or skip protein when busy, leading the coach to warn against inadequate caloric intake.",
+        "Physical activity remains a bright spot, with the client consistently incorporating walking, household chores, and stretching despite low energy.",
+    ],
+    nutritionAdherence=65,
+    exerciseSteps=6625,
+    sleepAmount=5.9,
+    waterIntake=3.75,
+    symptomsStress="High",
+    engagementLevel="Good",
+    keyBarriers="High-pressure work environment and school schedule prevent consistent meal planning. Chronic sleep deprivation (averaging ~5 hours) is causing extreme fatigue and exacerbating digestive issues like acidity and bloating.",
+    pendingActions=[
+        "Stock vegetables for consistent salad intake",
+        "Establish a consistent reminder for ACV consumption",
+        "Increase protein intake during school hours (sprouts, chana)",
+        "Improve sleep hygiene to reach 7-8 hours consistently",
+    ],
+    recommendedActions="Prioritize a 'minimum viable' meal prep strategy for school days to prevent under-eating protein. The coach should focus on stress management techniques and a strict sleep schedule to address the extreme fatigue and acidity before increasing exercise intensity.",
+    keyTakeaway="The client is highly motivated but currently overwhelmed by work stress and severe sleep debt, which is manifesting as physical exhaustion and digestive distress. While she is active, her metabolic progress is hindered by under-eating and high cortisol; stabilizing her routine and sleep must be the immediate priority.",
+    supportingEvidence=[
+        Evidence(
+            quote="Slept only around 5 hours last night. Daughter had exams, so I was awake late.",
+            day="Day 1",
+            type="R",
+        ),
+        Evidence(
+            quote="I still need to stock vegetables properly. Will do it tomorrow.",
+            day="Day 1",
+            type="R",
+        ),
+        Evidence(
+            quote="Weight seems slightly up even though I'm eating almost half of what I used to eat.",
+            day="Day 5",
+            type="R",
+        ),
+        Evidence(
+            quote="I am not getting enough time to plan meals.",
+            day="Day 6",
+            type="R",
+        ),
+        Evidence(
+            quote="During a meeting today I was so tired that my head went down on the table and I actually slept for a few seconds.",
+            day="Day 7",
+            type="R",
+        ),
+        Evidence(
+            quote="Weight is around 83 kg. Waist almost same.",
+            day="Day 8",
+            type="F",
+        ),
+    ],
+    riskSeverities=[
+        RiskSeverity(label="Extreme Fatigue / Burnout", level="High"),
+        RiskSeverity(label="Chronic Sleep Deprivation", level="High"),
+        RiskSeverity(label="Digestive Distress (Acidity/Bloating)", level="Medium"),
+    ],
+    diagnosysSummary=[
+        "Chronic sleep debt averaging 5.9 hours per night.",
+        "High occupational stress and emotional exhaustion.",
+        "Symptoms of functional dyspepsia (bloating and acidity) correlated with stress and sleep loss.",
+        "Inadequate protein distribution across daily meals.",
+    ],
+)
+
 GEMINI_ERROR_MESSAGES: dict[int | str, str] = {
     400: "The request body is malformed. Or Gemini free tier is not available in your country. Enable billing in Google AI Studio.",
     403: "Your API key doesn't have the required permissions.",
@@ -36,35 +138,7 @@ Rules:
 - Do not invent metrics that were never mentioned; if sparse, say so in summaries and mark type M where appropriate.
 - Be concise and professional. No medical diagnosis language."""
 
-## Evidence Codes
-# F - Confirmed Fact
-# R - Client Reported
-# I - AI Inference
-# M - Missing / unavailable
-class Evidence(BaseModel) :
-    quote: str = Field(description="Near-verbatim quote from the conversation")
-    day: str = Field(description="Day label or short source reference (e.g. Day 7)")
-    type: Literal["F", "R", "I", "M"] = Field(description="Evidence type: F - Confirmed Fact, R - Client Reported, I - AI Inference, or M - Missing/Unavailable")
 
-class RiskSeverity(BaseModel):
-    label: str = Field(description="Short description of the risk or attention flag")
-    level: Literal["High", "Medium", "Low"] = Field(description="Severity: High, Medium, or Low")
-
-# Response Schema of AI
-class ClientIntelligence(BaseModel) :
-    weekSummary: list[str] = Field(description="Weekly client summary bullet points (3-6 items) grounded in the conversation")
-    nutritionAdherence: Optional[int] = Field(description="Estimated diet adherence percentage 0-100 based on coach guidance vs client reports")
-    exerciseSteps: Optional[int] = Field(description="Average daily steps when reported; estimate only from mentioned figures")
-    sleepAmount: Optional[float] = Field(description="Average sleep hours (e.g. 5.9) from reported nights")
-    waterIntake: Optional[float] = Field(description="Average water intake in litres/day from reported values")
-    symptomsStress: str = Field(description="Stress / symptom burden level: Low, Moderate, or High")
-    engagementLevel: str = Field(description="Client engagement with coach updates: Bad, Moderate, or Good")
-    keyBarriers: str = Field(description="Main obstacles to goals (20-50 words), grounded in conversation")
-    pendingActions: list[str] = Field(description="Outstanding client TODOs / missed habits to follow up")
-    recommendedActions: str = Field(description="Recommended next action for the coach (30-60 words)")
-    keyTakeaway: str = Field(description="One concise paragraph (2-4 sentences) capturing the most important overall insight for the coach")
-    supportingEvidence: list[Evidence] = Field(description="3-8 supporting quotes from the original conversation with evidence type")
-    riskSeverity: list[RiskSeverity] = Field(description="Risk / attention flags with severity for coach prioritisation")
 
 client = genai.Client(api_key = settings.GEMINI_API_KEY)
 
@@ -77,6 +151,10 @@ async def ask_gemini(prompt: str, model: str) -> str:
 
 async def analyze_gemini(conversation: str, model: str) -> ClientIntelligence:
     try :
+        ## MOCK DATA - comment / uncomment
+        return SAVE_TOKEN
+    
+        # --- Real AI API call ---
         response = client.models.generate_content(
             model=model,
             contents = conversation,
