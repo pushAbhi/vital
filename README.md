@@ -1,37 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vital - AI powered Healthcare Coach Platform + Dashboard
+Real-time conversation analysis, intelligent client insights, and professional dashboards for coaches.
 
-## Getting Started
+**MVP Live:** [Live](https://vital-two-amber.vercel.app/)
 
-First, run the development server:
+## What is Vital?
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Vital is a **scalable AI Dashboard** that turns raw client-coach conversations into structured, actionable intelligence. minimal hallucination from the AI. Coaches get clean, evidence-backed insights. Clients self-update their activity data.
+
+Built for real healthcare professionals.
+
+## Core Features
+
+- **Conversation to AI powered Dashboard**: Paste client-coach dialogue → get structured JSON output with custom schema + strict instructions.
+- **Hallucination Control**: Lowered temperature + optional fields + proper JSON schema enforcement. Arithmetic (steps, sleep, water intake) will be moved to deterministic functions soon.
+- **Dual Dashboard**:
+  - **Client View**: Simple table to log daily activity.
+  - **Coach View**: Clean, trackable overview with attached evidence blocks. No more chasing clients.
+- **Security Layer**: Explicit isolation between backend and frontend to prevent direct backend exposure/interception.
+- **Multi-AI Fallback**: Horizontal scaling via multiple free AI providers. One dies or runs out of tokens? Auto-switch. Also lets us route to the best model for medical-grade accuracy.
+
+## Tech Stack
+
+- **Frontend**: Next.js (TypeScript)
+- **Backend**: FastAPI (Python)
+- **AI Layer**: Structured output with strict JSON schemas + system prompts
+- **Architecture**: Decoupled frontend + backend with dedicated security boundary
+
+## Project Structure
+
+```
+vital/
+├── backend/          # FastAPI service
+├── frontend/         # Next.js application
+└── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Current Status
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Test phase ready.**  
+MVP is fully functional and ready for real healthcare professionals to hammer on it. Several fields still need refinement - we're not pretending it's perfect.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Next Moves (no fluff):**
+- Move all arithmetic calculations out of AI into pure functions (saves tokens + kills hallucinations)
+- Polish remaining dashboard fields
+- Production hardening
+- Expand multi-AI routing intelligence
 
-## Learn More
+## Why This Matters
 
-To learn more about Next.js, take a look at the following resources:
+Most AI health tools are fancy wrappers that hallucinate and waste everyone's time. 
+Vital is engineered to be different: strict schemas, evidence attachment to allow coaches easily verify AI data, client self-reporting, and coach efficiency first.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Setup & Development
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-## Deploy on Vercel
+### Backend
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# vital
+This is early but serious. If you're a dev who can ship clean code, open a PR.
