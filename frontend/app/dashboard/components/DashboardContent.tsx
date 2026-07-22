@@ -211,11 +211,10 @@ function DashboardBody({ data }: { data: MedicalData }) {
 
                         {/* Weekly summary */}
                         <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-                            <div className="flex items-center justify-between mb-3">
-                                <h3 className="text-sm font-semibold text-slate-800">
+                            <div className="relative flex items-center justify-center">
+                                <h3 className="text-md font-semibold text-slate-800">
                                     Weekly Client Summary
                                 </h3>
-                                <EvidenceBadge type="I" />
                             </div>
                             <ul className="space-y-2">
                                 {summary.map((item, i) => (

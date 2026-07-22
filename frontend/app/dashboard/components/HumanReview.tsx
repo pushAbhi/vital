@@ -41,11 +41,11 @@ export default function HumanReview() {
                     </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2 flex-1">
+                <div className="flex flex-wrap items-center gap-10 ml-10 flex-1">
                     <button
                         type="button"
                         onClick={handleApprove}
-                        className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors ${
+                        className={`inline-flex items-center gap-2 rounded-xl hover:cursor-pointer border px-4 py-2.5 text-sm font-medium transition-colors hover:scale-105 ${
                             selected === "approve"
                                 ? "border-emerald-400 bg-emerald-50 text-emerald-700"
                                 : "border-emerald-200 bg-emerald-50/50 text-emerald-700 hover:bg-emerald-50"
@@ -63,7 +63,7 @@ export default function HumanReview() {
                     <button
                         type="button"
                         onClick={handleEdit}
-                        className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors ${
+                        className={`inline-flex items-center gap-2 rounded-xl hover:cursor-pointer border px-4 py-2.5 text-sm font-medium transition-colors hover:scale-105 ${
                             selected === "edit"
                                 ? "border-sky-400 bg-sky-50 text-sky-700"
                                 : "border-sky-200 bg-sky-50/50 text-sky-700 hover:bg-sky-50"
@@ -81,7 +81,7 @@ export default function HumanReview() {
                     <button
                         type="button"
                         onClick={handleReject}
-                        className="inline-flex items-center gap-2 rounded-xl border border-red-200 bg-red-50/50 text-red-700 hover:bg-red-50 px-4 py-2.5 text-sm font-medium transition-colors"
+                        className="inline-flex items-center hover:scale-105 hover:cursor-pointer gap-2 rounded-xl border border-red-200 bg-red-50/50 text-red-700 hover:bg-red-50 px-4 py-2.5 text-sm font-medium transition-colors"
                     >
                         <X className="w-4 h-4" />
                         <span className="flex flex-col items-start leading-tight">
