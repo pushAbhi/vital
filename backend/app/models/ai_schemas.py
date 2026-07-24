@@ -18,6 +18,17 @@ class RiskSeverity(BaseModel):
     level: Literal["High", "Medium", "Low"] = Field(description="Severity: High, Medium, or Low")
 
 # Response Schema of AI
+
+recommendedActions = """
+30-60 word coaching recommendation based ONLY on information EXPLICITLY stated in the conversation.
+
+Recommendations should focus on coaching behaviours such as: improving meal consistency, increasing protein intake if mentioned, improving sleep habits, hydration, stress management, exercise adherence
+
+Do NOT invent new medical conditions, diagnoses, physiological mechanisms,
+or interventions that are not EXPLICITLY supported by the conversation.
+Avoid mentioning medical conditions such as blood sugar, glucose, insulin, hormones, deficiencies, gut disorders, or diseases unless directly discussed by the client or coach.
+"""
+
 class ClientIntelligence(BaseModel) :
     weekSummary: list[str] = Field(description="Weekly client summary bullet points (3-6 items) grounded in the conversation")
     nutritionAdherence: Optional[int] = Field(description="Estimated diet adherence percentage 0-100 based on coach guidance vs client reports")
@@ -28,7 +39,7 @@ class ClientIntelligence(BaseModel) :
     engagementLevel: str = Field(description="Client engagement with coach updates: Bad, Moderate, or Good")
     keyBarriers: str = Field(description="Main obstacles to goals (20-50 words), grounded in conversation")
     pendingActions: list[str] = Field(description="Outstanding client TODOs / missed habits to follow up")
-    recommendedActions: str = Field(description="Recommended next action for the coach (30-60 words)")
+    recommendedActions: str = Field(description=recommendedActions)
     keyTakeaway: str = Field(description="One concise paragraph (2-4 sentences) capturing the most important overall insight for the coach")
     supportingEvidence: list[Evidence] = Field(description="3-8 supporting quotes from the original conversation with evidence type")
     riskSeverities: list[RiskSeverity] = Field(description="Risk / attention flags with severity for coach prioritisation")
