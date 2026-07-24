@@ -75,7 +75,7 @@ You will be given an anonymised conversation between a CLIENT and a health COACH
 Analyse the full conversation and return structured client intelligence.
 
 Rules:
-- Ground findings in the conversation. Prefer numbers and quotes that actually appear.
+- Ground findings in the conversation. Prefer numbers and quotes that actually appear. Do not infer relationships that are not explicitly stated.
 - Distinguish evidence types for supportingEvidence.type:
   F = Confirmed Fact (objective metric or coach-confirmed),
   R = Client Reported,
@@ -85,7 +85,9 @@ Rules:
 - supportingEvidence.quote must be near-verbatim excerpts from the conversation.
 - supportingEvidence.day should reference the day label if present (e.g. "Day 3"), otherwise a short source note.
 - Do not invent metrics that were never mentioned; if sparse, say so in summaries and mark type M where appropriate.
-- Be concise and professional. No medical diagnosis language."""
+- Be concise and professional. No medical diagnosis language.
+- Do not use causal terms such as "caused", "driven by", "led to", ACT PROFESSIONAL.
+"""
 
 ## ----------- ERROR HANDLING ---------------------
 GEMINI_ERROR_MESSAGES: dict[int | str, str] = {
