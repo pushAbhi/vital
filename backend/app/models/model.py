@@ -1,4 +1,3 @@
-from app.database import Base, engine
 from sqlmodel import  SQLModel, Field, Relationship
 from pydantic import EmailStr
 from enum import Enum
@@ -24,7 +23,7 @@ class UserRegister(SQLModel):
     password: str = Field(min_length=6, max_length=40)
     full_name: str | None = Field(default=None, max_length=255)
 
-class User(UserBase, Table=True):
+class User(UserBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     hashed_password: str | None = None # password | google
     items: list["Item"] = Relationship(back_populates="owner", cascade_delete=True)
@@ -60,6 +59,3 @@ class Token(SQLModel):
 # Contents of JWT token
 class TokenPayload(SQLModel):
     sub: str | None = None
-
-# creates the table if it doesn't exist
-Base.metadata.create_all(bind=engine)
