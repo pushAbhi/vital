@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.gemini_router.routes import router as gemini_router
 from app.api.system_router.routes import router as system_router
+from app.api.dbtest import router as dbtest_router
 
 ## RUN backend
 # ❯ source venv/bin/activate
@@ -24,3 +25,4 @@ app.add_middleware(
 
 app.include_router(system_router)   # / and /health
 app.include_router(gemini_router)   # /gemini
+app.include_router(dbtest_router)
