@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.gemini_router.routes import router as gemini_router
-from app.api.system_router.routes import router as system_router
+from app.api.gemini import router as gemini_router
+from app.api.system import router as system_router
 from app.api.dbtest import router as dbtest_router
 
 ## RUN backend
