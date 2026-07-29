@@ -57,6 +57,8 @@ export default function LandingForm() {
                         className="w-full resize-y rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/20 focus:border-navy transition-shadow"
                         disabled={isPending}
                         value={textAreaValue}
+                        minLength={100}
+                        maxLength={20000}
                         onChange={(e) => setTextAreaValue(e.target.value)}
                     ></textarea>
 

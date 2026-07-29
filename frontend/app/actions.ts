@@ -2,22 +2,44 @@
 
 import { FormState, MedicalData } from "./types";
 
+import { z } from "zod";
+
 const BACKEND_URL = process.env.BACKEND_URL;
 const SECRET = process.env.FRONTEND_SECRET_KEY;
+
+const conversationSchema = z
+    .string()
+    .trim()
+    .min(100, "Conversation is too short to analyze")
+    .max(
+        20000,
+        "Conversation is too long, please trim under 20,000 characters",
+    );
 
 export async function handleFormSubmit(
     _prevState: FormState,
     formData: FormData,
 ): Promise<FormState> {
-    const content = formData.get("content") as string;
+    const raw = formData.get("content") as string;
 
-    if (!content || !content.trim()) {
+    if (!raw || !raw.trim()) {
         return {
             success: false,
             error: "Please paste a client-coach conversation.",
             data: null,
         };
     }
+
+    const parsed = conversationSchema.safeParse(raw);
+    if (!parsed.success) {
+        return {
+            success: false,
+            error: parsed.error.issues[0].message,
+            data: null,
+        };
+    }
+
+    const content = parsed.data;
 
     if (!BACKEND_URL || !SECRET) {
         console.error(
