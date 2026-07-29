@@ -4,9 +4,7 @@ from sqlmodel import SQLModel
 from contextlib import asynccontextmanager
 
 from app.database import engine
-from app.api.gemini import router as gemini_router
-from app.api.system import router as system_router
-from app.api.users  import router as  users_router
+from app.api.main import api_router
 
 ## RUN backend
 # ❯ source venv/bin/activate
@@ -33,6 +31,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(system_router)   # / and /health
-app.include_router(gemini_router)   # /gemini
-app.include_router(users_router)
+app.include_router(api_router)
