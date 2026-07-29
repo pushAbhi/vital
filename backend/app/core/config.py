@@ -15,5 +15,8 @@ class Settings(BaseSettings):
     # -------- SECRETS ---------
     FRONTEND_SECRET_KEY: str
 
+    ACCESS_TOKEN_EXPIRE_HOURS: int
+    JWT_SECRET_KEY: str
+
 
 settings = Settings()

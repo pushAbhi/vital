@@ -28,7 +28,7 @@ def get_users(session: SessionDep, skip: int = 0, limit: int = 50) -> Any:
 
     return UsersPublic(data=users, count=count)
 
-# CREATE NEW USERs
+# CREATE NEW USERS - WITHOUT NEEDING TO BE LOGGED IN
 @router.post("/signup", response_model=UserPublic)
 def register_user(session: SessionDep, user_in: UserRegister) -> Any :
     user = crud.get_user_by_email(session=session, email=user_in.email)
