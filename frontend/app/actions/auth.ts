@@ -7,7 +7,7 @@ import { ROUTES } from "../constants/routes";
 import { getPublicEnv } from "../config/process-env";
 import { LoginBody, LoginResult, TokenResponse } from "../types/auth";
 
-const { LOGIN } = ROUTES;
+const { HOME } = ROUTES;
 
 export const loginAction = async (
     _prevState: LoginResult,
@@ -51,7 +51,8 @@ export const loginAction = async (
 };
 
 export const logoutAction = async (): Promise<void> => {
+    console.log("Exec");
     const cookieStore = await cookies();
     cookieStore.delete(AUTH_COOKIE);
-    redirect(LOGIN);
+    redirect(HOME);
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { loginAction } from "../actions/auth";
+import { loginAction, logoutAction } from "../actions/auth";
 import { LoginResult } from "../types/auth";
 
 const initialState: LoginResult = { success: false, error: "" };
@@ -11,7 +11,6 @@ export default function Navbar() {
         loginAction,
         initialState,
     );
-
     return (
         <div className="bg-amber-300 p-2 flex items-center justify-between">
             <form action={formAction} className="flex gap-2">
@@ -35,6 +34,14 @@ export default function Navbar() {
                     className="bg-blue-300 p-4 rounded-2xl disabled:opacity-50"
                 >
                     {isPending ? "Signing in..." : "Sign in"}
+                </button>
+            </form>
+            <form action={logoutAction}>
+                <button
+                    className="bg-blue-300 p-4 rounded-2xl disabled:opacity-50"
+                    type="submit"
+                >
+                    Logout
                 </button>
             </form>
             {!state.success && state.error && (
