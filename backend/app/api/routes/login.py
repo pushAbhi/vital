@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from typing import Annotated, Any
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import datetime, timedelta, timezone
+from fastapi.responses import JSONResponse
 
-from app.api.deps import SessionDep, CurrentUser
+from app.api.deps import SessionDep, CurrentUser, get_current_user
 from app import crud
 from app.core.config import settings
 from app.core import security
@@ -11,6 +12,9 @@ from app.models.model import Token, UserPublic
 
 router = APIRouter(tags=["login"])
 
+"""
+Log in
+"""
 @router.post("/login/access-token")
 def login_access_token(session: SessionDep, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
     user = crud.authenticate(session=session, email=form_data.username, password=form_data.password)

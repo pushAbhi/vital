@@ -1,6 +1,6 @@
 "use server";
 
-import { FormState, MedicalData } from "./types";
+import { FormState, MedicalData } from "../types/types";
 
 import { z } from "zod";
 
