@@ -17,6 +17,7 @@ class Settings(BaseSettings):
 
     ACCESS_TOKEN_EXPIRE_HOURS: int
     JWT_SECRET_KEY: str
+    AUTH_COOKIE: str = "auth_cookie"
 
 
 settings = Settings()
