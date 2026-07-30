@@ -1,7 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import { Mail, Lock, HeartPulse } from "lucide-react";
+import { useActionState } from "react";
+import { loginAction } from "../actions/auth";
+import { LoginResult } from "../types/auth";
 
-export default function login() {
+const initialState: LoginResult = { success: false, error: "" };
+
+export default function Login() {
+    const [state, formAction, isPending] = useActionState(
+        loginAction,
+        initialState,
+    );
+
     return (
         <div className="min-h-screen bg-surface flex flex-col justify-center px-6 py-12">
             <div className="w-full max-w-sm mx-auto">
@@ -20,7 +32,7 @@ export default function login() {
 
                 {/* Card */}
                 <div className="bg-card rounded-2xl shadow-sm border border-slate-100 p-6">
-                    <form className="flex flex-col gap-4">
+                    <form className="flex flex-col gap-4" action={formAction}>
                         {/* Email */}
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1.5">
@@ -29,6 +41,7 @@ export default function login() {
                             <div className="relative">
                                 <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                                 <input
+                                    name="username"
                                     type="email"
                                     placeholder="you@example.com"
                                     className="w-full rounded-lg border border-slate-200 bg-surface pl-10 pr-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-navy-muted"
@@ -44,6 +57,7 @@ export default function login() {
                             <div className="relative">
                                 <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                                 <input
+                                    name="password"
                                     type="password"
                                     placeholder="••••••••"
                                     className="w-full rounded-lg border border-slate-200 bg-surface pl-10 pr-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-navy-muted"
@@ -63,10 +77,10 @@ export default function login() {
 
                         {/* Login button */}
                         <button
-                            type="button"
+                            type="submit"
                             className="w-full rounded-lg bg-navy text-white text-sm font-medium py-2.5 mt-2 hover:bg-navy-light transition-colors"
                         >
-                            Login
+                            {isPending ? "Logging in" : "Log in"}
                         </button>
                     </form>
 

@@ -47,7 +47,7 @@ export const loginAction = async (
         sameSite: "lax",
     });
 
-    return { success: true, data: { access_token, expires } };
+    redirect(HOME);
 };
 
 export const logoutAction = async (): Promise<void> => {
