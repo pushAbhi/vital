@@ -1,10 +1,11 @@
 from typing import Any
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import func, select
 
 from app import crud
 from app.api.deps import (
     SessionDep,
+    get_current_active_superuser
 )
 from app.models.model import (
     UserCreate,
@@ -17,7 +18,7 @@ from app.models.model import (
 router = APIRouter(prefix="/users", tags=["users"])
 
 # GET ALL USERS
-@router.get("/", response_model=UsersPublic)
+@router.get("/", dependencies=[Depends(get_current_active_superuser)], response_model=UsersPublic)
 def get_users(session: SessionDep, skip: int = 0, limit: int = 50) -> Any:
     count_statement = select(func.count()).select_from(User)
     count = session.exec(count_statement).one()
