@@ -1,6 +1,7 @@
 from typing import Any
 from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import func, select
+import uuid
 
 from app import crud
 from app.api.deps import (
@@ -37,6 +38,10 @@ def get_users(session: SessionDep, skip: int = 0, limit: int = 50) -> Any:
 # CREATE NEW USERS - WITHOUT NEEDING TO BE LOGGED IN
 @router.post("/signup", response_model=UserPublic)
 def register_user(session: SessionDep, user_in: UserRegister) -> Any :
+    """
+    Update own user,
+    email and full_name
+    """
     user = crud.get_user_by_email(session=session, email=user_in.email)
     if (user):
         raise HTTPException(
@@ -47,12 +52,13 @@ def register_user(session: SessionDep, user_in: UserRegister) -> Any :
     user = crud.create_user(session=session, user_create=user_create)
     return user
 
-"""
-Update own user,
-email and full_name
-"""
+
 @router.patch("/me", response_model=UserPublic)
 def update_user_me(*, session: SessionDep, user_in: UserUpdateMe, current_user: CurrentUser) -> Any:
+    """
+    update own user,
+    password
+    """
     if user_in.email:
         existing_user = crud.get_user_by_email(session=session, email=user_in.email)
         if existing_user and existing_user.id != current_user.id:
@@ -67,12 +73,12 @@ def update_user_me(*, session: SessionDep, user_in: UserUpdateMe, current_user: 
     session.refresh(current_user)
     return current_user
 
-"""
-update own user,
-password
-"""
+
 @router.patch("/me/password", response_model=Message)
 def update_password_me(*, session: SessionDep, body: UpdatePassword, current_user: CurrentUser) -> Any :
+    """
+    get current user
+    """
     if not verify_password(body.current_password, current_user.hashed_password):
         raise HTTPException(
             status_code=400, detail="Incorrect password"
@@ -87,18 +93,16 @@ def update_password_me(*, session: SessionDep, body: UpdatePassword, current_use
     session.commit()
     return Message(message="Password updated successfully")
 
-"""
-get current user
-"""
+
 @router.get("/me", response_model=UserPublic)
 def read_user_me(current_user: CurrentUser) -> Any:
     return current_user
 
-"""
-delete current user
-"""
 @router.delete("/me", response_model=Message)
 def delete_current_user(session: SessionDep, current_user: CurrentUser) -> Any:
+    """
+    delete current user
+    """
     if current_user.is_superuser:
         raise HTTPException(
             status_code=403, detail="Super users are not allowed to delete themselves"
@@ -106,3 +110,20 @@ def delete_current_user(session: SessionDep, current_user: CurrentUser) -> Any:
     session.delete(current_user)
     session.commit()
     return Message(message="Account deleted successfully")
+
+@router.get("/{user_id}", response_model=UserPublic)
+def read_user_by_id(
+    user_id: uuid.UUID, session: SessionDep, current_user: CurrentUser
+) -> Any:
+    """
+    Get a specific user by id.
+    """
+    user = session.get(User, user_id)
+    if user == current_user:
+        return user
+    if not current_user.is_superuser:
+        raise HTTPException(
+            status_code=403,
+            detail="The user doesn't have enough privileges",
+        )
+    return user
