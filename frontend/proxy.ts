@@ -3,7 +3,7 @@ import { AUTH_COOKIE } from "./app/constants/auth";
 import { ROUTES } from "./app/constants/routes";
 
 const AUTH_ROUTES = [ROUTES.LOGIN, ROUTES.REGISTER, ROUTES.FORGOT_PASSWORD];
-const PROTECTED_ROUTES = [ROUTES.DASHBOARD, ROUTES.SETTINGS];
+const PROTECTED_ROUTES = [ROUTES.SETTINGS];
 
 // Normalize away trailing slashes so "/login" and "/login/" match the same way
 const normalize = (path: string) =>
