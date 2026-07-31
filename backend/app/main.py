@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 from sqlmodel import SQLModel
 from contextlib import asynccontextmanager
 
 from app.database import engine
 from app.api.main import api_router
+from app.core.config import settings
 
 ## RUN backend
 # ❯ source venv/bin/activate
@@ -30,5 +32,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Session middleware - required by authlib for OAuth state
+app.add_middleware(SessionMiddleware, secret_key=settings.JWT_SECRET_KEY)
 
 app.include_router(api_router)
