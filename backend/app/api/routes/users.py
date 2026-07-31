@@ -14,8 +14,11 @@ from app.models.model import (
     UserRegister,
     User,
     UsersPublic,
-    UserUpdateMe
+    UserUpdateMe,
+    Message,
+    UpdatePassword
 )
+from app.core.security import verify_password, get_password_hash
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -44,6 +47,10 @@ def register_user(session: SessionDep, user_in: UserRegister) -> Any :
     user = crud.create_user(session=session, user_create=user_create)
     return user
 
+"""
+Update own user,
+email and full_name
+"""
 @router.patch("/me", response_model=UserPublic)
 def update_user_me(*, session: SessionDep, user_in: UserUpdateMe, current_user: CurrentUser) -> Any:
     if user_in.email:
@@ -59,3 +66,23 @@ def update_user_me(*, session: SessionDep, user_in: UserUpdateMe, current_user: 
     session.commit()
     session.refresh(current_user)
     return current_user
+
+"""
+update own user,
+password
+"""
+@router.patch("/me/password", response_model=Message)
+def update_password_me(*, session: SessionDep, body: UpdatePassword, current_user: CurrentUser) -> Any :
+    if not verify_password(body.current_password, current_user.hashed_password):
+        raise HTTPException(
+            status_code=400, detail="Incorrect password"
+        )
+    if body.current_password == body.new_password:
+        raise HTTPException(
+            status_code=400, detail="New password cannot be the same as current one"
+        )
+    hashed_password = get_password_hash(body.new_password)
+    current_user.hashed_password = hashed_password
+    session.add(current_user)
+    session.commit()
+    return Message(message="Password updated successfully")
