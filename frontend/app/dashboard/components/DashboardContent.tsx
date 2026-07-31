@@ -25,7 +25,7 @@ import EvidenceBadge, { EvidenceLegend } from "./EvidenceBadge";
 import HumanReview from "./HumanReview";
 import Sidebar from "./Sidebar";
 import MetricCard, { InsightCard } from "./ui/Cards";
-import { MedicalData } from "@/app/types";
+import { MedicalData } from "@/app/types/types";
 
 function nutritionLabel(pct: number) {
     if (pct >= 80) return { text: "Good", color: "text-emerald-600" };

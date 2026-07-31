@@ -7,6 +7,10 @@
 /backend/**/*.pyc
 /backend/venv/
 
+# api test
+.postman
+postman
+
 ## Frontend fluff
 # dependencies
 /frontend/node_modules

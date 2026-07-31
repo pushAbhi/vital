@@ -15,5 +15,17 @@ class Settings(BaseSettings):
     # -------- SECRETS ---------
     FRONTEND_SECRET_KEY: str
 
+    ACCESS_TOKEN_EXPIRE_HOURS: int
+    JWT_SECRET_KEY: str
+    AUTH_COOKIE: str = "auth_cookie"
+
+    GOOGLE_CLIENT_ID: str
+    GOOGLE_CLIENT_SECRET: str
+    SITE_URL: str
+
+    ENVIRONMENT: str = "local"
+
 
 settings = Settings()
+
+is_prod = settings.ENVIRONMENT == "production"

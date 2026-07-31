@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 from sqlmodel import SQLModel
 from contextlib import asynccontextmanager
 
 from app.database import engine
-from app.api.gemini import router as gemini_router
-from app.api.system import router as system_router
-from app.api.users  import router as  users_router
+from app.api.main import api_router
+from app.core.config import settings
 
 ## RUN backend
 # ❯ source venv/bin/activate
@@ -33,6 +33,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(system_router)   # / and /health
-app.include_router(gemini_router)   # /gemini
-app.include_router(users_router)
+# Session middleware - required by authlib for OAuth state
+app.add_middleware(SessionMiddleware, secret_key=settings.JWT_SECRET_KEY)
+
+app.include_router(api_router)
