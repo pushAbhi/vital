@@ -103,13 +103,14 @@ export default function Login() {
 
                     {/* OAuth buttons */}
                     <div className="flex flex-col gap-3">
-                        <button
+                        <Link
+                            href={`${process.env.NEXT_PUBLIC_SITE_URL}/login/google`}
                             type="button"
                             className="w-full flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white py-2.5 text-sm font-medium text-slate-700 hover:bg-surface transition-colors"
                         >
                             <GoogleIcon className="w-4 h-4" />
                             Continue with Google
-                        </button>
+                        </Link>
 
                         <button
                             type="button"
