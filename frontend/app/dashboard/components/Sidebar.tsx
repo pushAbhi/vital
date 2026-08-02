@@ -79,7 +79,11 @@ export default function Sidebar() {
                             }`}
                         >
                             <Icon className="w-4.5 h-4.5 shrink-0" />
-                            <span className="sidebar-label">{item.label}</span>
+                            {collapsed ? null : (
+                                <span className="sidebar-label">
+                                    {item.label}
+                                </span>
+                            )}
                         </div>
                     );
                 })}
